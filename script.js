@@ -5,9 +5,9 @@
 // --- CONFIGURAÇÃO DA API ---
 const API_CONFIG = {
   // URL do Google Apps Script Web App (GET exercícios)
-  GET_EXERCISES_URL: 'https://script.google.com/macros/s/SEU_ID_AQUI/exec?action=getExercises',
+  GET_EXERCISES_URL: 'https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbywwz_5dBBEzqcMhjssMKYdkEzByNDkHGWMiTxE3EVYGEMW8Ex17uiHXL01-BwSa4U8/exec/exec?action=getExercises',
   // URL do Google Apps Script Web App (POST treino)
-  SAVE_WORKOUT_URL:  'https://script.google.com/macros/s/SEU_ID_AQUI/exec',
+  SAVE_WORKOUT_URL:  'https://script.google.com/macros/s/AKfycbywwz_5dBBEzqcMhjssMKYdkEzByNDkHGWMiTxE3EVYGEMW8Ex17uiHXL01-BwSa4U8/exec',
 };
 
 // --- DADOS MOCK (fallback se API não disponível) ---
