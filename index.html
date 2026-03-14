@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitBuilder — Monte seu Treino</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon"><i class="fas fa-dumbbell"></i></span>
+        <span class="logo-text">Fit<span class="accent">Builder</span></span>
+      </div>
+      <div class="header-stats">
+        <div class="stat-badge" id="exerciseCountBadge">
+          <i class="fas fa-list-check"></i>
+          <span id="totalExercises">0</span> exercícios
+        </div>
+      </div>
+    </div>
+    <div class="header-tagline">Monte. Treine. Evolua.</div>
+  </header>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- MAIN -->
+  <main class="main-container">
+
+    <!-- NOME DO TREINO -->
+    <section class="section workout-name-section">
+      <div class="section-header">
+        <i class="fas fa-pencil"></i>
+        <h2>Nome do Treino</h2>
+      </div>
+      <div class="input-group">
+        <input type="text" id="workoutName" placeholder="Ex: Treino A — Peito e Tríceps" maxlength="60" />
+      </div>
+    </section>
+
+    <!-- BUSCA E FILTRO -->
+    <section class="section search-section">
+      <div class="section-header">
+        <i class="fas fa-magnifying-glass"></i>
+        <h2>Buscar Exercícios</h2>
+      </div>
+      <div class="search-bar-row">
+        <div class="search-input-wrap">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Buscar por nome..." />
+        </div>
+        <button class="btn-reload" id="reloadBtn" title="Recarregar da planilha">
+          <i class="fas fa-rotate-right"></i>
+        </button>
+      </div>
+      <div class="filter-chips" id="filterChips">
+        <button class="chip active" data-group="todos">Todos</button>
+      </div>
+    </section>
+
+    <!-- LISTA DE EXERCÍCIOS -->
+    <section class="section">
+      <div class="section-header">
+        <i class="fas fa-table-list"></i>
+        <h2>Exercícios Disponíveis</h2>
+      </div>
+      <div class="exercise-grid" id="exerciseGrid">
+        <div class="loading-state" id="loadingState">
+          <div class="spinner"></div>
+          <p>Carregando exercícios...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TREINO MONTADO -->
+    <section class="section workout-section" id="workoutSection">
+      <div class="section-header">
+        <i class="fas fa-fire"></i>
+        <h2>Meu Treino</h2>
+        <span class="badge" id="workoutBadge">0</span>
+      </div>
+      <div class="empty-workout" id="emptyWorkout">
+        <i class="fas fa-dumbbell empty-icon"></i>
+        <p>Adicione exercícios ao seu treino acima.</p>
+      </div>
+      <div class="workout-list" id="workoutList"></div>
+    </section>
+
+    <!-- RESUMO E SALVAR -->
+    <section class="section summary-section" id="summarySection" style="display:none;">
+      <div class="section-header">
+        <i class="fas fa-clipboard-list"></i>
+        <h2>Resumo do Treino</h2>
+      </div>
+      <div class="summary-box" id="summaryBox"></div>
+      <div class="action-row">
+        <button class="btn btn-save" id="saveBtn">
+          <i class="fas fa-floppy-disk"></i> Salvar Treino
+        </button>
+        <button class="btn btn-clear" id="clearBtn">
+          <i class="fas fa-trash"></i> Limpar Treino
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>FitBuilder &copy; 2026 &mdash; Desenvolvido com <i class="fas fa-heart" style="color:#f43f5e"></i> para quem treina de verdade</p>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose"><i class="fas fa-xmark"></i></button>
+      <h3 class="modal-title" id="modalTitle">Configurar Exercício</h3>
+      <div class="modal-exercise-info" id="modalExerciseInfo"></div>
+      <form class="modal-form" id="modalForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Séries <span class="required">*</span></label>
+            <input type="number" id="inputSeries" min="1" max="20" placeholder="Ex: 4" required />
+          </div>
+          <div class="form-group">
+            <label>Repetições <span class="required">*</span></label>
+            <input type="number" id="inputReps" min="1" max="100" placeholder="Ex: 12" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Carga (kg)</label>
+            <input type="number" id="inputLoad" min="0" step="0.5" placeholder="Opcional" />
+          </div>
+          <div class="form-group">
+            <label>Observações</label>
+            <input type="text" id="inputObs" placeholder="Ex: Cadência lenta" maxlength="80" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">
+          <i class="fas fa-plus"></i> Adicionar ao Treino
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
