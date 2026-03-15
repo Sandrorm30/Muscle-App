@@ -1,48 +1,46 @@
 // =============================================
-//  FitBuilder — script.js
+//  FitBuilder — script.js (versão corrigida)
 // =============================================
 
 // --- CONFIGURAÇÃO DA API ---
 const API_CONFIG = {
-  // URL do Google Apps Script Web App (GET exercícios)
-  GET_EXERCISES_URL: 'https://script.google.com/macros/s/AKfycbyZs2I8gW01tGB52TB0pgMKHVfSGdR-xV2eiWxxUNymz0R3dE4He_kbgmnSqBQbv2aQ/exec?action=getExercises',
-  // URL do Google Apps Script Web App (POST treino)
-  SAVE_WORKOUT_URL:  'https://script.google.com/macros/s/AKfycbyZs2I8gW01tGB52TB0pgMKHVfSGdR-xV2eiWxxUNymz0R3dE4He_kbgmnSqBQbv2aQ/exec',
+  GET_EXERCISES_URL: 'https://script.google.com/macros/s/AKfycbywwz_5dBBEzqcMhjssMKYdkEzByNDkHGWMiTxE3EVYGEMW8Ex17uiHXL01-BwSa4U8/exec?action=getExercises',
+  SAVE_WORKOUT_URL:  'https://script.google.com/macros/s/AKfycbywwz_5dBBEzqcMhjssMKYdkEzByNDkHGWMiTxE3EVYGEMW8Ex17uiHXL01-BwSa4U8/exec',
 };
 
-// --- DADOS MOCK (fallback se API não disponível) ---
+// --- DADOS MOCK (fallback) ---
 const MOCK_EXERCISES = [
-  { id:1,  nome:'Supino Reto',          grupo_muscular:'Peito',    equipamento:'Barra',       nivel:'Intermediário', imagem:'🏋️' },
-  { id:2,  nome:'Supino Inclinado',     grupo_muscular:'Peito',    equipamento:'Halteres',    nivel:'Intermediário', imagem:'🏋️' },
-  { id:3,  nome:'Crucifixo',            grupo_muscular:'Peito',    equipamento:'Halteres',    nivel:'Iniciante',     imagem:'💪' },
-  { id:4,  nome:'Crossover',            grupo_muscular:'Peito',    equipamento:'Cabo',        nivel:'Iniciante',     imagem:'🔗' },
-  { id:5,  nome:'Pull-up',              grupo_muscular:'Costas',   equipamento:'Barra Fixa',  nivel:'Avançado',      imagem:'🧗' },
-  { id:6,  nome:'Remada Curvada',       grupo_muscular:'Costas',   equipamento:'Barra',       nivel:'Intermediário', imagem:'🏋️' },
-  { id:7,  nome:'Puxada Frontal',       grupo_muscular:'Costas',   equipamento:'Cabo',        nivel:'Iniciante',     imagem:'🔗' },
-  { id:8,  nome:'Remada Unilateral',    grupo_muscular:'Costas',   equipamento:'Halteres',    nivel:'Iniciante',     imagem:'💪' },
-  { id:9,  nome:'Agachamento Livre',    grupo_muscular:'Pernas',   equipamento:'Barra',       nivel:'Intermediário', imagem:'🦵' },
-  { id:10, nome:'Leg Press',            grupo_muscular:'Pernas',   equipamento:'Máquina',     nivel:'Iniciante',     imagem:'🦿' },
-  { id:11, nome:'Cadeira Extensora',    grupo_muscular:'Pernas',   equipamento:'Máquina',     nivel:'Iniciante',     imagem:'🦵' },
-  { id:12, nome:'Stiff',                grupo_muscular:'Pernas',   equipamento:'Barra',       nivel:'Intermediário', imagem:'🏋️' },
-  { id:13, nome:'Desenvolvimento',      grupo_muscular:'Ombros',   equipamento:'Halteres',    nivel:'Iniciante',     imagem:'🙌' },
-  { id:14, nome:'Elevação Lateral',     grupo_muscular:'Ombros',   equipamento:'Halteres',    nivel:'Iniciante',     imagem:'💪' },
-  { id:15, nome:'Arnold Press',         grupo_muscular:'Ombros',   equipamento:'Halteres',    nivel:'Intermediário', imagem:'🙌' },
-  { id:16, nome:'Rosca Direta',         grupo_muscular:'Bíceps',   equipamento:'Barra',       nivel:'Iniciante',     imagem:'💪' },
-  { id:17, nome:'Rosca Alternada',      grupo_muscular:'Bíceps',   equipamento:'Halteres',    nivel:'Iniciante',     imagem:'💪' },
-  { id:18, nome:'Rosca Martelo',        grupo_muscular:'Bíceps',   equipamento:'Halteres',    nivel:'Iniciante',     imagem:'🔨' },
-  { id:19, nome:'Tríceps Testa',        grupo_muscular:'Tríceps',  equipamento:'Barra',       nivel:'Intermediário', imagem:'💪' },
-  { id:20, nome:'Tríceps Corda',        grupo_muscular:'Tríceps',  equipamento:'Cabo',        nivel:'Iniciante',     imagem:'🔗' },
-  { id:21, nome:'Mergulho (Dips)',      grupo_muscular:'Tríceps',  equipamento:'Barra Fixa',  nivel:'Avançado',      imagem:'🧗' },
-  { id:22, nome:'Panturrilha em Pé',    grupo_muscular:'Panturrilha', equipamento:'Máquina',  nivel:'Iniciante',     imagem:'🦵' },
-  { id:23, nome:'Abdominal Crunch',     grupo_muscular:'Abdômen',  equipamento:'Solo',        nivel:'Iniciante',     imagem:'🔥' },
-  { id:24, nome:'Prancha',              grupo_muscular:'Abdômen',  equipamento:'Solo',        nivel:'Iniciante',     imagem:'🔥' },
+  { id:1,  nome:'Supino Reto',          grupo_muscular:'Peito',       equipamento:'Barra',       nivel:'Intermediário', imagem:'🏋️' },
+  { id:2,  nome:'Supino Inclinado',     grupo_muscular:'Peito',       equipamento:'Halteres',    nivel:'Intermediário', imagem:'🏋️' },
+  { id:3,  nome:'Crucifixo',            grupo_muscular:'Peito',       equipamento:'Halteres',    nivel:'Iniciante',     imagem:'💪' },
+  { id:4,  nome:'Crossover',            grupo_muscular:'Peito',       equipamento:'Cabo',        nivel:'Iniciante',     imagem:'🔗' },
+  { id:5,  nome:'Pull-up',              grupo_muscular:'Costas',      equipamento:'Barra Fixa',  nivel:'Avançado',      imagem:'🧗' },
+  { id:6,  nome:'Remada Curvada',       grupo_muscular:'Costas',      equipamento:'Barra',       nivel:'Intermediário', imagem:'🏋️' },
+  { id:7,  nome:'Puxada Frontal',       grupo_muscular:'Costas',      equipamento:'Cabo',        nivel:'Iniciante',     imagem:'🔗' },
+  { id:8,  nome:'Remada Unilateral',    grupo_muscular:'Costas',      equipamento:'Halteres',    nivel:'Iniciante',     imagem:'💪' },
+  { id:9,  nome:'Agachamento Livre',    grupo_muscular:'Pernas',      equipamento:'Barra',       nivel:'Intermediário', imagem:'🦵' },
+  { id:10, nome:'Leg Press',            grupo_muscular:'Pernas',      equipamento:'Máquina',     nivel:'Iniciante',     imagem:'🦿' },
+  { id:11, nome:'Cadeira Extensora',    grupo_muscular:'Pernas',      equipamento:'Máquina',     nivel:'Iniciante',     imagem:'🦵' },
+  { id:12, nome:'Stiff',                grupo_muscular:'Pernas',      equipamento:'Barra',       nivel:'Intermediário', imagem:'🏋️' },
+  { id:13, nome:'Desenvolvimento',      grupo_muscular:'Ombros',      equipamento:'Halteres',    nivel:'Iniciante',     imagem:'🙌' },
+  { id:14, nome:'Elevação Lateral',     grupo_muscular:'Ombros',      equipamento:'Halteres',    nivel:'Iniciante',     imagem:'💪' },
+  { id:15, nome:'Arnold Press',         grupo_muscular:'Ombros',      equipamento:'Halteres',    nivel:'Intermediário', imagem:'🙌' },
+  { id:16, nome:'Rosca Direta',         grupo_muscular:'Bíceps',      equipamento:'Barra',       nivel:'Iniciante',     imagem:'💪' },
+  { id:17, nome:'Rosca Alternada',      grupo_muscular:'Bíceps',      equipamento:'Halteres',    nivel:'Iniciante',     imagem:'💪' },
+  { id:18, nome:'Rosca Martelo',        grupo_muscular:'Bíceps',      equipamento:'Halteres',    nivel:'Iniciante',     imagem:'🔨' },
+  { id:19, nome:'Tríceps Testa',        grupo_muscular:'Tríceps',     equipamento:'Barra',       nivel:'Intermediário', imagem:'💪' },
+  { id:20, nome:'Tríceps Corda',        grupo_muscular:'Tríceps',     equipamento:'Cabo',        nivel:'Iniciante',     imagem:'🔗' },
+  { id:21, nome:'Mergulho (Dips)',      grupo_muscular:'Tríceps',     equipamento:'Barra Fixa',  nivel:'Avançado',      imagem:'🧗' },
+  { id:22, nome:'Panturrilha em Pé',    grupo_muscular:'Panturrilha', equipamento:'Máquina',     nivel:'Iniciante',     imagem:'🦵' },
+  { id:23, nome:'Abdominal Crunch',     grupo_muscular:'Abdômen',     equipamento:'Solo',        nivel:'Iniciante',     imagem:'🔥' },
+  { id:24, nome:'Prancha',              grupo_muscular:'Abdômen',     equipamento:'Solo',        nivel:'Iniciante',     imagem:'🔥' },
 ];
 
 // --- ESTADO GLOBAL ---
-let allExercises  = [];
-let currentWorkout = [];   // { exercise, series, reps, load, obs }
+let allExercises   = [];
+let currentWorkout = [];
 let selectedExercise = null;
-let activeGroup  = 'todos';
+let activeGroup    = 'todos';
 
 // --- ELEMENTOS DOM ---
 const exerciseGrid   = document.getElementById('exerciseGrid');
@@ -80,19 +78,33 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadExercises() {
   showLoading(true);
   try {
-    const res = await Promise.race([
-      fetch(API_CONFIG.GET_EXERCISES_URL),
-      new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 5000)),
-    ]);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    const res = await fetch(API_CONFIG.GET_EXERCISES_URL, {
+      signal: controller.signal,
+      mode: 'cors',
+    });
+    clearTimeout(timeout);
+
     if (!res.ok) throw new Error('HTTP ' + res.status);
+
     const data = await res.json();
-    allExercises = Array.isArray(data) ? data : (data.exercises || []);
-    showToast('Exercícios carregados da planilha!', 'success');
+    const list  = Array.isArray(data) ? data : (data.exercises || []);
+
+    // Só usa dados da API se vier com conteúdo válido
+    if (list.length > 0 && list[0].nome) {
+      allExercises = list;
+      showToast('Exercícios carregados da planilha! ✅', 'success');
+    } else {
+      throw new Error('Dados vazios ou inválidos');
+    }
+
   } catch (e) {
-    // fallback para dados mockados
     allExercises = MOCK_EXERCISES;
     showToast('Usando dados de demonstração.', 'info');
   }
+
   buildFilterChips();
   renderExercises();
   showLoading(false);
@@ -107,7 +119,8 @@ async function saveWorkout() {
     showToast('Adicione ao menos 1 exercício!', 'error');
     return;
   }
-  const now = new Date().toLocaleString('pt-BR');
+
+  const now  = new Date().toLocaleString('pt-BR');
   const rows = currentWorkout.map(item => ({
     data:        now,
     nome_treino: name,
@@ -122,21 +135,18 @@ async function saveWorkout() {
   saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
 
   try {
-    const res = await Promise.race([
-      fetch(API_CONFIG.SAVE_WORKOUT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'saveWorkout', rows }),
-      }),
-      new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000)),
-    ]);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    showToast('Treino salvo na planilha! 🎉', 'success');
+    const res = await fetch(API_CONFIG.SAVE_WORKOUT_URL, {
+      method:  'POST',
+      mode:    'no-cors', // necessário para Apps Script sem proxy
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ action: 'saveWorkout', rows }),
+    });
+    // no-cors retorna opaque response — assume sucesso se não lançar erro
     saveToLocalStorage();
+    showToast('Treino salvo! 🎉', 'success');
   } catch (e) {
-    // salva localmente mesmo sem API
     saveToLocalStorage();
-    showToast('Salvo localmente (API indisponível).', 'info');
+    showToast('Salvo localmente (verifique a planilha).', 'info');
   }
 
   saveBtn.disabled = false;
@@ -149,9 +159,8 @@ async function saveWorkout() {
 function renderExercises() {
   const q = searchInput.value.toLowerCase().trim();
   const filtered = allExercises.filter(ex => {
-    const matchGroup = activeGroup === 'todos' || ex.grupo_muscular === activeGroup;
-    const matchSearch = !q || ex.nome.toLowerCase().includes(q)
-      || ex.grupo_muscular.toLowerCase().includes(q);
+    const matchGroup  = activeGroup === 'todos' || ex.grupo_muscular === activeGroup;
+    const matchSearch = !q || ex.nome.toLowerCase().includes(q) || ex.grupo_muscular.toLowerCase().includes(q);
     return matchGroup && matchSearch;
   });
 
@@ -178,7 +187,9 @@ function renderExercises() {
         <span class="tag tag-level ${levelClass(ex.nivel)}">${ex.nivel}</span>
       </div>
       <button class="card-add-btn ${inWorkout ? 'added' : ''}" data-id="${ex.id}">
-        ${inWorkout ? '<i class="fas fa-check"></i> Adicionado' : '<i class="fas fa-plus"></i> Adicionar'}
+        ${inWorkout
+          ? '<i class="fas fa-check"></i> Adicionado'
+          : '<i class="fas fa-plus"></i> Adicionar'}
       </button>
     `;
     card.querySelector('.card-add-btn').addEventListener('click', e => {
@@ -205,9 +216,9 @@ function buildFilterChips() {
   filterChips.innerHTML = '';
   groups.forEach(g => {
     const btn = document.createElement('button');
-    btn.className = 'chip' + (g === activeGroup ? ' active' : '');
+    btn.className  = 'chip' + (g === activeGroup ? ' active' : '');
     btn.dataset.group = g;
-    btn.textContent = g === 'todos' ? 'Todos' : g;
+    btn.textContent   = g === 'todos' ? 'Todos' : g;
     btn.addEventListener('click', () => {
       activeGroup = g;
       document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
@@ -239,7 +250,7 @@ function openModal(ex) {
   document.getElementById('inputLoad').value   = '';
   document.getElementById('inputObs').value    = '';
   modalOverlay.classList.add('open');
-  document.getElementById('inputSeries').focus();
+  setTimeout(() => document.getElementById('inputSeries').focus(), 100);
 }
 
 function closeModal() {
@@ -252,6 +263,11 @@ function closeModal() {
 // =============================================
 modalForm.addEventListener('submit', e => {
   e.preventDefault();
+
+  // Guarda referência local para evitar null após closeModal
+  const ex = selectedExercise;
+  if (!ex) return;
+
   const series = parseInt(document.getElementById('inputSeries').value);
   const reps   = parseInt(document.getElementById('inputReps').value);
   const load   = document.getElementById('inputLoad').value.trim();
@@ -260,38 +276,37 @@ modalForm.addEventListener('submit', e => {
   if (!series || series < 1) { showToast('Informe o número de séries!', 'error'); return; }
   if (!reps   || reps   < 1) { showToast('Informe o número de repetições!', 'error'); return; }
 
-  // Evitar duplicata
-  if (currentWorkout.some(w => w.exercise.id === selectedExercise.id)) {
+  if (currentWorkout.some(w => w.exercise.id === ex.id)) {
     showToast('Exercício já está no treino!', 'error');
     closeModal();
     return;
   }
 
-  currentWorkout.push({ exercise: selectedExercise, series, reps, load, obs });
+  currentWorkout.push({ exercise: ex, series, reps, load, obs });
   closeModal();
   renderWorkout();
   renderExercises();
   saveToLocalStorage();
-  showToast(`${selectedExercise.nome} adicionado! 💪`, 'success');
+  showToast(`${ex.nome} adicionado! 💪`, 'success');
 });
 
 // =============================================
 // RENDER TREINO
 // =============================================
 function renderWorkout() {
-  workoutBadge.textContent  = currentWorkout.length;
+  workoutBadge.textContent   = currentWorkout.length;
   totalExercises.textContent = currentWorkout.length;
 
   if (currentWorkout.length === 0) {
-    emptyWorkout.style.display = 'block';
-    workoutList.innerHTML = '';
+    emptyWorkout.style.display  = 'block';
+    workoutList.innerHTML       = '';
     summarySection.style.display = 'none';
     return;
   }
 
-  emptyWorkout.style.display = 'none';
+  emptyWorkout.style.display   = 'none';
   summarySection.style.display = 'block';
-  workoutList.innerHTML = '';
+  workoutList.innerHTML        = '';
 
   currentWorkout.forEach((item, idx) => {
     const div = document.createElement('div');
@@ -332,7 +347,7 @@ function removeExercise(idx) {
 // =============================================
 function renderSummary() {
   const name = workoutName.value.trim() || 'Sem nome';
-  let html = `<div style="margin-bottom:12px; font-size:0.82rem; color:var(--text3);">
+  let html = `<div style="margin-bottom:12px;font-size:0.82rem;color:var(--text3)">
     <b style="color:var(--text)">Treino:</b> ${name} &nbsp;|&nbsp;
     <b style="color:var(--text)">${currentWorkout.length}</b> exercícios
   </div>`;
@@ -350,18 +365,20 @@ function renderSummary() {
 // LOCALSTORAGE
 // =============================================
 function saveToLocalStorage() {
-  localStorage.setItem('fitbuilder_workout', JSON.stringify({
-    name: workoutName.value.trim(),
-    items: currentWorkout,
-  }));
+  try {
+    localStorage.setItem('fitbuilder_workout', JSON.stringify({
+      name:  workoutName.value.trim(),
+      items: currentWorkout,
+    }));
+  } catch(e) { /* ignore */ }
 }
 
 function loadWorkoutFromStorage() {
   try {
     const saved = JSON.parse(localStorage.getItem('fitbuilder_workout'));
-    if (saved && saved.items) {
+    if (saved && Array.isArray(saved.items) && saved.items.length > 0) {
       workoutName.value = saved.name || '';
-      currentWorkout = saved.items;
+      currentWorkout    = saved.items;
     }
   } catch (e) { /* ignore */ }
 }
@@ -373,9 +390,9 @@ let toastTimer;
 function showToast(msg, type = 'info') {
   clearTimeout(toastTimer);
   const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
-  toast.innerHTML = `<i class="fas ${icons[type] || 'fa-circle-info'}"></i> ${msg}`;
-  toast.className = `toast show ${type}`;
-  toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+  toast.innerHTML  = `<i class="fas ${icons[type] || 'fa-circle-info'}"></i> ${msg}`;
+  toast.className  = `toast show ${type}`;
+  toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3200);
 }
 
 // =============================================
@@ -407,5 +424,5 @@ function bindEvents() {
   });
 }
 
-// Renderiza treino salvo no storage ao iniciar
+// Render inicial do treino salvo
 renderWorkout();
