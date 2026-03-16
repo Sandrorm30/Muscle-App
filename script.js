@@ -331,7 +331,8 @@ function renderPickerGrid() {
   });
 
   pickerGrid.innerHTML = '';
-  document.getElementById('pickerLoading').style.display = 'none';
+  const pl = document.getElementById('pickerLoading');
+  if (pl) pl.style.display = 'none';
 
   if (filtered.length === 0) {
     pickerGrid.innerHTML = `<div class="no-results"><i class="fas fa-face-frown-open"></i><p>Nenhum exercício encontrado.</p></div>`;
