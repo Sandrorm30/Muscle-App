@@ -6,7 +6,7 @@
 // -----------------------------------------------
 // CONFIGURAÇÃO — substitua pela sua URL real
 // -----------------------------------------------
-const API_URL = 'https://script.google.com/macros/s/AKfycbyZs2I8gW01tGB52TB0pgMKHVfSGdR-xV2eiWxxUNymz0R3dE4He_kbgmnSqBQbv2aQ/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycby5wxMIvwrxd72HVgCPz6LuFPQUmxULpyy5rHgUX1aEEehZt4gPwKg_HRChhSUl6iMC/exec';
 // -----------------------------------------------
 
 // --- DADOS MOCK ---
