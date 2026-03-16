@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitBuilder — Meus Treinos</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon"><i class="fas fa-dumbbell"></i></span>
+        <span class="logo-text">Fit<span class="accent">Builder</span></span>
+      </div>
+      <div class="header-actions">
+        <div class="sync-badge" id="syncBadge">
+          <i class="fas fa-cloud-arrow-up"></i> Sincronizado
+        </div>
+        <button class="btn-icon" id="btnSync" title="Sincronizar com planilha">
+          <i class="fas fa-rotate-right"></i>
+        </button>
+        <button class="btn-icon btn-icon-accent" id="btnNewWorkout">
+          <i class="fas fa-plus"></i><span>Novo Treino</span>
+        </button>
+      </div>
+    </div>
+    <div class="header-tagline">Monte. Treine. Evolua.</div>
+  </header>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- VIEW: LISTA DE TREINOS -->
+  <div class="view" id="viewWorkouts">
+    <main class="main-container">
+
+      <section class="section quick-section">
+        <div class="section-header">
+          <i class="fas fa-bolt"></i>
+          <h2>Atalhos Rápidos</h2>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-btn" data-name="Treino A">A</button>
+          <button class="quick-btn" data-name="Treino B">B</button>
+          <button class="quick-btn" data-name="Treino C">C</button>
+          <button class="quick-btn" data-name="Treino D">D</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <i class="fas fa-list-check"></i>
+          <h2>Meus Treinos</h2>
+          <span class="badge" id="badgeTotalWorkouts">0</span>
+        </div>
+        <div class="workouts-grid" id="workoutsGrid">
+          <div class="empty-state" id="emptyWorkouts">
+            <i class="fas fa-dumbbell"></i>
+            <p>Nenhum treino criado ainda.<br>Clique em <b>Novo Treino</b> para começar!</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- VIEW: EDITOR DE TREINO -->
+  <div class="view hidden" id="viewEditor">
+    <div class="editor-topbar">
+      <button class="btn-back" id="btnBack">
+        <i class="fas fa-arrow-left"></i> Meus Treinos
+      </button>
+      <div class="editor-title-wrap">
+        <span class="editor-title" id="editorTitle">Treino A</span>
+        <button class="btn-icon-sm" id="btnRenameWorkout" title="Renomear"><i class="fas fa-pencil"></i></button>
+      </div>
+      <button class="btn-icon-sm btn-danger-sm" id="btnDeleteWorkout" title="Excluir treino">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+
+    <main class="main-container">
+
+      <section class="section">
+        <div class="section-header">
+          <i class="fas fa-fire"></i>
+          <h2>Exercícios do Treino</h2>
+          <span class="badge" id="badgeEditorCount">0</span>
+          <button class="btn-add-ex" id="btnOpenPicker">
+            <i class="fas fa-plus"></i> Adicionar
+          </button>
+        </div>
+        <div class="empty-workout" id="emptyEditor">
+          <i class="fas fa-dumbbell empty-icon"></i>
+          <p>Nenhum exercício adicionado.<br>Clique em <b>+ Adicionar</b> para incluir.</p>
+        </div>
+        <div class="workout-list" id="editorList"></div>
+      </section>
+
+      <section class="section summary-section" id="summarySection" style="display:none">
+        <div class="section-header">
+          <i class="fas fa-clipboard-list"></i>
+          <h2>Resumo do Treino</h2>
+        </div>
+        <div class="summary-box" id="summaryBox"></div>
+        <div class="action-row">
+          <button class="btn btn-save" id="saveBtn">
+            <i class="fas fa-floppy-disk"></i> Salvar na Planilha
+          </button>
+          <button class="btn btn-clear" id="clearBtn">
+            <i class="fas fa-trash"></i> Limpar
+          </button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL: NOVO TREINO -->
+  <div class="modal-overlay" id="modalNewWorkout">
+    <div class="modal">
+      <button class="modal-close" id="closeNewWorkout"><i class="fas fa-xmark"></i></button>
+      <h3 class="modal-title">Novo Treino</h3>
+      <form id="formNewWorkout" class="modal-form">
+        <div class="form-group">
+          <label>Nome do Treino</label>
+          <input type="text" id="inputNewWorkoutName" placeholder="Ex: Treino A, Push Day..." maxlength="40" required />
+        </div>
+        <div class="quick-name-hints">
+          <span>Sugestões:</span>
+          <button type="button" class="hint-chip" data-val="Treino A">Treino A</button>
+          <button type="button" class="hint-chip" data-val="Treino B">Treino B</button>
+          <button type="button" class="hint-chip" data-val="Treino C">Treino C</button>
+          <button type="button" class="hint-chip" data-val="Push Day">Push Day</button>
+          <button type="button" class="hint-chip" data-val="Pull Day">Pull Day</button>
+          <button type="button" class="hint-chip" data-val="Leg Day">Leg Day</button>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">
+          <i class="fas fa-plus"></i> Criar Treino
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: RENOMEAR -->
+  <div class="modal-overlay" id="modalRename">
+    <div class="modal">
+      <button class="modal-close" id="closeRename"><i class="fas fa-xmark"></i></button>
+      <h3 class="modal-title">Renomear Treino</h3>
+      <form id="formRename" class="modal-form">
+        <div class="form-group">
+          <label>Novo Nome</label>
+          <input type="text" id="inputRenameName" maxlength="40" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">
+          <i class="fas fa-check"></i> Salvar Nome
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: PICKER DE EXERCÍCIOS -->
+  <div class="modal-overlay modal-fullscreen" id="modalPicker">
+    <div class="modal modal-lg">
+      <button class="modal-close" id="closePicker"><i class="fas fa-xmark"></i></button>
+      <h3 class="modal-title">Selecionar Exercício</h3>
+      <div class="picker-search-row">
+        <div class="search-input-wrap">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="pickerSearch" placeholder="Buscar exercício..." />
+        </div>
+      </div>
+      <div class="filter-chips" id="pickerChips"></div>
+      <div class="exercise-grid" id="pickerGrid"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIGURAR EXERCÍCIO -->
+  <div class="modal-overlay" id="modalExConfig">
+    <div class="modal">
+      <button class="modal-close" id="closeExConfig"><i class="fas fa-xmark"></i></button>
+      <h3 class="modal-title" id="exConfigTitle">Configurar Exercício</h3>
+      <div class="modal-exercise-info" id="exConfigInfo"></div>
+      <form class="modal-form" id="formExConfig">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Séries <span class="required">*</span></label>
+            <input type="number" id="inputSeries" min="1" max="20" placeholder="Ex: 4" required />
+          </div>
+          <div class="form-group">
+            <label>Repetições <span class="required">*</span></label>
+            <input type="number" id="inputReps" min="1" max="200" placeholder="Ex: 12" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Carga (kg)</label>
+            <input type="number" id="inputLoad" min="0" step="0.5" placeholder="Opcional" />
+          </div>
+          <div class="form-group">
+            <label>Observações</label>
+            <input type="text" id="inputObs" placeholder="Ex: Cadência lenta" maxlength="80" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="btnExConfigSubmit">
+          <i class="fas fa-plus"></i> Adicionar ao Treino
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>FitBuilder &copy; 2026 &mdash; Desenvolvido com <i class="fas fa-heart" style="color:#f43f5e"></i> para quem treina de verdade</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+  <script src="timer.js"></script>
+  <script src="history.js"></script>
+  <script src="pdf.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
