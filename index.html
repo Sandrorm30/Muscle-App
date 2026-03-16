@@ -19,7 +19,13 @@
         <span class="logo-text">Fit<span class="accent">Builder</span></span>
       </div>
       <div class="header-actions">
-        <button class="btn-icon" id="btnNewWorkout" title="Novo Treino">
+        <div class="sync-badge" id="syncBadge">
+          <i class="fas fa-cloud-arrow-up"></i> Sincronizado
+        </div>
+        <button class="btn-icon" id="btnSync" title="Sincronizar com planilha">
+          <i class="fas fa-rotate-right"></i>
+        </button>
+        <button class="btn-icon btn-icon-accent" id="btnNewWorkout">
           <i class="fas fa-plus"></i><span>Novo Treino</span>
         </button>
       </div>
@@ -34,7 +40,6 @@
   <div class="view" id="viewWorkouts">
     <main class="main-container">
 
-      <!-- ATALHOS A B C D -->
       <section class="section quick-section">
         <div class="section-header">
           <i class="fas fa-bolt"></i>
@@ -48,7 +53,6 @@
         </div>
       </section>
 
-      <!-- MEUS TREINOS -->
       <section class="section">
         <div class="section-header">
           <i class="fas fa-list-check"></i>
@@ -83,7 +87,6 @@
 
     <main class="main-container">
 
-      <!-- EXERCÍCIOS NO TREINO -->
       <section class="section">
         <div class="section-header">
           <i class="fas fa-fire"></i>
@@ -100,7 +103,6 @@
         <div class="workout-list" id="editorList"></div>
       </section>
 
-      <!-- RESUMO -->
       <section class="section summary-section" id="summarySection" style="display:none">
         <div class="section-header">
           <i class="fas fa-clipboard-list"></i>
@@ -128,7 +130,7 @@
       <form id="formNewWorkout" class="modal-form">
         <div class="form-group">
           <label>Nome do Treino</label>
-          <input type="text" id="inputNewWorkoutName" placeholder='Ex: Treino A, Push Day...' maxlength="40" required />
+          <input type="text" id="inputNewWorkoutName" placeholder="Ex: Treino A, Push Day..." maxlength="40" required />
         </div>
         <div class="quick-name-hints">
           <span>Sugestões:</span>
@@ -146,7 +148,7 @@
     </div>
   </div>
 
-  <!-- MODAL: RENOMEAR TREINO -->
+  <!-- MODAL: RENOMEAR -->
   <div class="modal-overlay" id="modalRename">
     <div class="modal">
       <button class="modal-close" id="closeRename"><i class="fas fa-xmark"></i></button>
@@ -163,7 +165,7 @@
     </div>
   </div>
 
-  <!-- MODAL: SELETOR DE EXERCÍCIOS -->
+  <!-- MODAL: PICKER DE EXERCÍCIOS -->
   <div class="modal-overlay modal-fullscreen" id="modalPicker">
     <div class="modal modal-lg">
       <button class="modal-close" id="closePicker"><i class="fas fa-xmark"></i></button>
@@ -175,11 +177,7 @@
         </div>
       </div>
       <div class="filter-chips" id="pickerChips"></div>
-      <div class="exercise-grid" id="pickerGrid">
-        <div class="loading-state" id="pickerLoading">
-          <div class="spinner"></div><p>Carregando...</p>
-        </div>
-      </div>
+      <div class="exercise-grid" id="pickerGrid"></div>
     </div>
   </div>
 
@@ -210,7 +208,6 @@
             <input type="text" id="inputObs" placeholder="Ex: Cadência lenta" maxlength="80" />
           </div>
         </div>
-        <input type="hidden" id="editingIndex" value="-1" />
         <button type="submit" class="btn btn-primary btn-full" id="btnExConfigSubmit">
           <i class="fas fa-plus"></i> Adicionar ao Treino
         </button>
