@@ -6,7 +6,7 @@
 // -----------------------------------------------
 // CONFIGURAÇÃO — substitua pela sua URL real
 // -----------------------------------------------
-const API_URL = 'https://script.google.com/macros/s/SEU_ID_AQUI/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycby5wxMIvwrxd72HVgCPz6LuFPQUmxULpyy5rHgUX1aEEehZt4gPwKg_HRChhSUl6iMC/exec';
 // -----------------------------------------------
 
 // --- DADOS MOCK ---
